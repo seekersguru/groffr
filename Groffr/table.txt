@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS `register` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `fastname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `passcode` varchar(100) NOT NULL,
+  `loginwith` varchar(20) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `userid` (`userid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
