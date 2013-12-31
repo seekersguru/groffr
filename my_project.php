@@ -1,5 +1,5 @@
 <?php
-	include('header.php');
+include('header.php');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -17,31 +17,34 @@
 
 <?php
 	$query = "Select * from projects where owner_id =".$_SESSION['user_id'];
-	// echo $query."<br>";
-	$result = mysql_query($query) or die(mysql_error() );
+    $listabQuery 			=	$db->query($query);
 	// exit;
 	// header('Location:myaccount.php');
-	while($data = mysql_fetch_object($result)){
+	while($data = $db->fetchNextObject($listabQuery)){
 		?>
-		<table style='text-align:left;border:1px solid #000;margin-bottom:20px'>
+		<table class= "table table-bordered table-hover">
 			<tr>
 
 		<td>
 			Project Summary
 		</td>
+		<td>
 		<?php
-			echo "<td>".$data->summary."</td>"
+			echo $data->summary;
 		?>
+	</td>
 			</tr>
 			<tr>
 
 		<td>
 			Details
 		</td>
+		<td>
 		<?php
-			echo "<td>".$data->details."</td>";
+			echo $data->details;
 		?>
-			</tr>
+			
+			</td></tr>
 			<tr>
 
 		<td>
@@ -49,7 +52,7 @@
 		</td>
 		<td>
 			<?php
-				echo "<td>".$data->type."</td>";
+				echo $data->type;
 			?>
 		</td>
 			</tr>
@@ -60,7 +63,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->box_price."</td>";
+			echo $data->box_price;
 			?>
 		</td>
 			</tr>
@@ -71,7 +74,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->location."</td>";
+			echo $data->location;
 			?>
 		</td>
 			</tr>
@@ -82,7 +85,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->ratio."</td>";
+			echo $data->ratio;
 			?>
 		</td>
 			</tr>
@@ -93,7 +96,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->payment_plan."</td>";
+			echo $data->payment_plan;
 			?>
 		</td>
 			</tr>
@@ -104,7 +107,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->agent_connection_count."</td>";
+			echo $data->agent_connection_count;
 			?>
 		</td>
 			</tr>
@@ -115,17 +118,17 @@
 		</th>
 		<td>
 		<?php
-			echo "<td>".$data->buyer_seller_connection_count."</td>";
+			echo $data->buyer_seller_connection_count;
 		?>
 		</td>
 		</tr>
 		</table>
 		<b>Connections with this projects</b> -
 		<?php
-			$pro_conn_results = mysql_query("select * from connection conn,register reg where conn.projects_id = '".$data->id."' and reg.id=conn.register_id ") or die(mysql_error());
+			$pro_conn_results = mysql_query("select * from connection conn,register reg where conn.projects_id = '".$data->id."' and reg.userid=conn.register_id ") or die(mysql_error());
 			// print_r($pro_conn_results);
-			while( $pro_conn_data = mysql_fetch_object($pro_conn_results) ){
-				echo $pro_conn_data->fname "<br>";
+			while( $pro_conn_data = @mysql_fetch_object($pro_conn_results) ){
+				echo $pro_conn_data->firstname."<br>";
 
 			}
 	}

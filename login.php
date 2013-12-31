@@ -1,13 +1,11 @@
 <?php
 include('connection.php');
+ /* Login With Linked in */
+  include($_SERVER['DOCUMENT_ROOT'].'/Groffr/linkedin/linkedin_function.php');
 $social = 0;
 $loginwith = 'Main';
 /** fb set **/
-?>
-
-
-<a href="https://graph.facebook.com/oauth/authorize?client_id=240625999437259&redirect_uri=<?php echo urlencode('http://localhost/Groffr/login.php');?>&scope=email,read_insights">Login with facebook</a>
-<?php $client_id = '240625999437259';
+$client_id = '240625999437259';
 $secret_key = '060a9cddefeffd951a24a8ff95e0b4ca';
 
 if(isset($_GET['code'])) {
@@ -18,32 +16,32 @@ if(isset($_GET['code'])) {
     'client_id=' . $client_id . '&redirect_uri=' . urlencode('http://localhost/Groffr/login.php') .
     '&client_secret=' .  $secret_key .
     '&code=' . urlencode($code)));
-	$fb_json = json_decode( sc_curl_get_contents("https://graph.facebook.com/me?access_token=" . $access_token) );
-	//print_r($fb_json);
-	    $sc_provider_identity = $fb_json->id;
-		$sc_email = $fb_json->email;
-		$sc_first_name = $fb_json->first_name;
-		$sc_last_name = $fb_json->last_name;
-		$sc_profile_url = $fb_json->link;
-		$sc_birth = $fb_json->birthday;
-		$sc_gender = $fb_json->gender;
-		$sc_city = $fb_json->hometown->name;
-		$sc_city = $fb_json->location->name;
-		$sc_city = $fb_json->work[0]->employer->name;
+  $fb_json = json_decode( sc_curl_get_contents("https://graph.facebook.com/me?access_token=" . $access_token) );
+  //print_r($fb_json);
+      $sc_provider_identity = $fb_json->id;
+    $sc_email = $fb_json->email;
+    $sc_first_name = $fb_json->first_name;
+    $sc_last_name = $fb_json->last_name;
+    $sc_profile_url = $fb_json->link;
+    $sc_birth = $fb_json->birthday;
+    $sc_gender = $fb_json->gender;
+    $sc_city = $fb_json->hometown->name;
+    $sc_city = $fb_json->location->name;
+    $sc_city = $fb_json->work[0]->employer->name;
 
-		$_SESSION['fname'] =$sc_first_name;
-		$_SESSION['lname']= $sc_last_name;
-		$_SESSION['email'] = $sc_email;
-		$_SESSION['passcode']= "xcxcx465461365";
-		$social = 1;
-		$loginwith = 'Facebook';
+    $_SESSION['fname'] =$sc_first_name;
+    $_SESSION['lname']= $sc_last_name;
+    $_SESSION['email'] = $sc_email;
+    $_SESSION['passcode']= "xcxcx465461365";
+    $social = 1;
+    $loginwith = 'Facebook';
 
 }
 function sc_curl_get_contents( $url ) {
-	$curl = curl_init();
-	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $curl, CURLOPT_URL, $url );
-	curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+  $curl = curl_init();
+  curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+  curl_setopt( $curl, CURLOPT_URL, $url );
+  curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
     $html = curl_exec( $curl );
     curl_close( $curl );
     return $html;
@@ -58,98 +56,158 @@ function oauth_session_exists() {
     return FALSE;
   }
 }
+  if( isset($_POST['signin']) ){
+    $email    = mysql_real_escape_string($_POST['email']);
+    $password = mysql_real_escape_string($_POST['password']);
+   $login_result = mysql_query("select * from register where email ='".$email."' and password = '".$password."'");
+    if( mysql_num_rows($login_result) > 0){
+      $user_data = mysql_fetch_object( $login_result )  ;
+        $_SESSION['fname'] = $user_data->firstname;
+        $_SESSION['lname'] = $user_data->lastname;
+        $_SESSION['user_id'] = $user_data->userid;
+        header('location:myaccount.php');
+      }
+      else{
+        $error=1;
+        $msg="Email or password does not match";
+              }
+  }
 
-if( isset($_POST['register']) ){
 
-	$fname 	= mysql_real_escape_string($_POST['fname']);
-	$lname 	= mysql_real_escape_string($_POST['lname']);
-	$email 		= mysql_real_escape_string($_POST['email']);
-	$passcode	= mysql_real_escape_string($_POST['passcode']);
-	$loginwith	= mysql_real_escape_string($_POST['loginwith']);
-	$status 	= 'active';
-	$check_result = mysql_query("select id from register where email = '".$email ."'") or die(mysql_error());
-	if( mysql_num_rows($check_result) == 0 ){
+        if( $_GET['login']=='linkedin'){
+          $social = 1;
 
-		$mysql = mysql_query("insert into register set fname	= '".$fname."',
-								lname	=	'".$lname."',
-								email		=	'".$email."',
-								passcode	=	'".$passcode."',
-								loginwith	=	'".$loginwith."',
-								status		= 	'".$status."'");
-		$_SESSION['fname'] = $fname;
-		$_SESSION['lname'] = $lname;
-		$_SESSION['user_id'] = mysql_insert_id();
-		header('Location:myaccount.php');
-	}
-	else{
-		echo "<br>A user with email address <b>". $email ."</b> already registered";
-	}
+        $_SESSION['oauth']['linkedin']['authorized'] = (isset($_SESSION['oauth']['linkedin']['authorized'])) ? $_SESSION['oauth']['linkedin']['authorized'] : FALSE;
+                if($_SESSION['oauth']['linkedin']['authorized'] === TRUE) {
+                  $OBJ_linkedin = new LinkedIn($API_CONFIG);
+                    $OBJ_linkedin->setTokenAccess($_SESSION['oauth']['linkedin']['access']);
+                  $OBJ_linkedin->setResponseFormat(LINKEDIN::_RESPONSE_XML);
+                }
 
-}
 
-/* Login With Linked in */
+          $response         = $OBJ_linkedin->profile('~:(id,first-name,last-name,picture-url,email-address)');
+          $result             = new SimpleXMLElement($response['linkedin']);
+                $_SESSION['passcode']   = $result->id;
+                $_SESSION['fname']    = $result->{'first-name'};
+                $_SESSION['lname']    = $result->{'last-name'};
+                $_SESSION['email'] =    $result->{'email-address'};
 
-include("linkedin/linkedin_function.php");
+                $loginwith = 'LinkedIn';
 
+                $login_result = mysql_query("select userid,firstname,lastname from register where email ='".$email."'");
+      if( mysql_num_rows($login_result) > 0){
+
+      $user_data = mysql_fetch_object( $login_result )  ;
+        $_SESSION['fname'] = $user_data->firstname;
+        $_SESSION['lname'] = $user_data->lastname;
+      $_SESSION['userid'] = $user_data->userid;
+      $_SESSION['user_id']= $user_data->userid;
+      header('location:myaccount.php');
+      }
+      else
+      {
+         $query = "insert into register(`firstname`,`lastname`,`email`,`password`,`status`,`loginwith`)
+           values('".$_SESSION['fname']."',
+                  '".$_SESSION['lname']."',
+                  '".$_SESSION['email']."',
+                  '". $_SESSION['passcode']."',
+                  'active',
+        '".$loginwith."' )";
+         $mysql = mysql_query($query) or die(mysql_error() );
+         $_SESSION['userid'] = mysql_insert_id();
+         
+        }
+       
+    header('location:myaccount.php');
+
+        }
+           
+ 
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>Login System</title>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+    <title>Signin Template for Bootstrap</title>
 
-<div class="content">
-	<div class="login_left">
-		<span class="linkedin">
-			<?php
-				if( $_GET['login']=='linkedin'){
-					$social = 1;
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
 
-				$_SESSION['oauth']['linkedin']['authorized'] = (isset($_SESSION['oauth']['linkedin']['authorized'])) ? $_SESSION['oauth']['linkedin']['authorized'] : FALSE;
-			         	if($_SESSION['oauth']['linkedin']['authorized'] === TRUE) {
-			         		$OBJ_linkedin = new LinkedIn($API_CONFIG);
-			           		$OBJ_linkedin->setTokenAccess($_SESSION['oauth']['linkedin']['access']);
-			         		$OBJ_linkedin->setResponseFormat(LINKEDIN::_RESPONSE_XML);
-			         	}
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-					$response 				= $OBJ_linkedin->profile('~:(id,first-name,last-name,picture-url,email-address)');
-					$result         		= new SimpleXMLElement($response['linkedin']);
-          	        $_SESSION['passcode'] 	= $result->id;
-          			$_SESSION['fname'] 		= $result->{'first-name'};
-          			$_SESSION['lname'] 		= $result->{'last-name'};
-          			$_SESSION['email'] =    $result->{'email-address'};
+  <body>
+<div class="container">
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  	  <div class="container">
+  	    <div class="navbar-header">
+  	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  	        <span class="sr-only">Toggle navigation</span>
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+  	      </button>
+  	      <a class="navbar-brand" href="<?php echo WEBSITE_URL;?>">Groffr</a>
+  	    </div>
+  	    <div class="navbar-collapse collapse">
+  	      <ul class="nav navbar-nav">
+  	        <li ><a href="register.php">Register</a></li>
+  	        <li><a class="active" href="login.php">Login</a></li>
+  	       
+  	      </ul>
+  	    </div><!--/.nav-collapse -->
+  	  </div>
+  	</div>
+    <!-- Fixed navbar -->
+    <div class="container">
+      <div style=' margin-top:120px' class='col-sm-4'>
 
-          			$loginwith = 'LinkedIn';
-				}
-            ?>
-        <form id="linkedin_connect_form" action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
+      <span class='border-right:1px solid #000;'>
+        <a href="https://graph.facebook.com/oauth/authorize?client_id=240625999437259&redirect_uri=<?php echo urlencode('http://localhost/Groffr/myaccount.php'); ?>">
+          <img src='assets/images/fb_connect.png'>
+        </a>
+      </span>
+      <!--  <form id="linkedin_connect_form" action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
         <input type="hidden" name="<?php echo LINKEDIN::_GET_TYPE;?>" id="<?php echo LINKEDIN::_GET_TYPE;?>" value="initiate" />
         <input type="submit" value="Connect to LinkedIn" name="linkedin" />
-        </form>
-	</span> <br/>
-	</div>
+        </form> -->
+      </div>
+      <div class=''>
 
-	<form method="POST" action="?register=true">
-	<div class="login_right">
-		<label>First Name</label> <span class="txtbox"> <input type="text" name="fname" class="input_box" placeholder="Enter First Name" autocomplete="off" required value="<?php print $_SESSION['fname']?>"> </span>
-		<label>Last Name</label> <span class="txtbox"> <input type="text" name="lname" class="input_box" placeholder="Enter Last Name" autocomplete="off" required value="<?php print $_SESSION['lname']?>"> </span>
-		<label>Email</label>     <span class="txtbox"> <input type="email" name="email" class="input_box" placeholder="Enter Email Address" autocomplete="off" required value="<?php print $_SESSION['email']?>"></span>
-		<?php if(!$social){ ?>
-		<label>Password</label>  <span class="txtbox"> <input type="password" name="password" class="input_box" placeholder="Enter Password" required></span>
-		<?php } ?>
-		<input type="hidden" name="passcode" value="<?php print $_SESSION['passcode']?>"></span>
-		<input type="hidden" name="loginwith" value="<?php print $loginwith?>"></span>
+      <form class="form-signin" method="POST">
+        <?php if($error){ echo '<div class="alert alert-danger">'.$msg.'</div>';} ?>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="form-control" placeholder="Email address" autofocus name='email'>
+        <input type="password" class="form-control" placeholder="Password" name='password'>
+        <!-- <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label> -->
+        <input type="hidden" value="signin" name="signin" /> 
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+       
+       <a href="register.php" class="btn btn-link">Register</a>
+      </form>
 
-		<div class="submit_box"><input type="submit" value="Submit" name="register"> </div>
-	<div>
-	</form>
-</div>
+      </div>
 
-</body>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  </body>
 </html>

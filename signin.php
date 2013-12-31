@@ -1,4 +1,58 @@
 <?php
+include('connection.php');
+$social = 0;
+$loginwith = 'Main';
+/** fb set **/ $client_id = '240625999437259';
+$secret_key = '060a9cddefeffd951a24a8ff95e0b4ca';
+
+if(isset($_GET['code'])) {
+ $code = $_GET['code'];
+  $client_id = '240625999437259';
+  $secret_key = '060a9cddefeffd951a24a8ff95e0b4ca';
+  parse_str(sc_curl_get_contents("https://graph.facebook.com/oauth/access_token?" .
+    'client_id=' . $client_id . '&redirect_uri=' . urlencode('http://localhost/Groffr/login.php') .
+    '&client_secret=' .  $secret_key .
+    '&code=' . urlencode($code)));
+  $fb_json = json_decode( sc_curl_get_contents("https://graph.facebook.com/me?access_token=" . $access_token) );
+  //print_r($fb_json);
+      $sc_provider_identity = $fb_json->id;
+    $sc_email = $fb_json->email;
+    $sc_first_name = $fb_json->first_name;
+    $sc_last_name = $fb_json->last_name;
+    $sc_profile_url = $fb_json->link;
+    $sc_birth = $fb_json->birthday;
+    $sc_gender = $fb_json->gender;
+    $sc_city = $fb_json->hometown->name;
+    $sc_city = $fb_json->location->name;
+    $sc_city = $fb_json->work[0]->employer->name;
+
+    $_SESSION['fname'] =$sc_first_name;
+    $_SESSION['lname']= $sc_last_name;
+    $_SESSION['email'] = $sc_email;
+    $_SESSION['passcode']= "xcxcx465461365";
+    $social = 1;
+    $loginwith = 'Facebook';
+
+}
+function sc_curl_get_contents( $url ) {
+  $curl = curl_init();
+  curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+  curl_setopt( $curl, CURLOPT_URL, $url );
+  curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+    $html = curl_exec( $curl );
+    curl_close( $curl );
+    return $html;
+}
+
+/** end fb set*/
+
+function oauth_session_exists() {
+  if((is_array($_SESSION)) && (array_key_exists('oauth', $_SESSION))) {
+    return TRUE;
+  } else {
+    return FALSE;
+  }
+}
   if( isset($_POST['signin']) ){
     $email    = mysql_real_escape_string($_POST['email']);
     $password = md5( mysql_real_escape_string($_POST['password'] ));
@@ -14,6 +68,9 @@
         echo "Email or password does not match";
       }
   }
+
+  /* Login With Linked in */
+  include("linkedin/linkedin_function.php");
 
 ?>
 <!DOCTYPE html>

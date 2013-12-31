@@ -1,10 +1,11 @@
-<?php include_once('header.php'); ?>
-<!-- <a href="my_connection.php">My Connections</a> -->
+<?php include_once('header.php');
+ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <title>Add Project</title>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+ <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -15,16 +16,16 @@
 	</h1>
 
 <?php
+
+
 	$query = "Select * from projects where owner_id !=".$_SESSION['user_id'];
-	// echo $query."<br>";
-	$result = mysql_query($query) or die(mysql_error() );
-	// exit;
-	// header('Location:myaccount.php');
-	while($data = mysql_fetch_object($result)){
+    $listabQuery 			=	$db->query($query);
+    while($data	=	$db->fetchNextObject($listabQuery))
+   {
 		?>
 		<form method='post'>
 
-		<table style='text-align:left;border:1px solid #000;margin-bottom:20px'>
+		<table class= "table table-bordered table-hover"  >
 			<tr>
 
 		<td>
@@ -39,9 +40,11 @@
 		<td>
 			Details
 		</td>
+		<td>
 		<?php
-			echo "<td>".$data->details."</td>";
+			echo $data->details;
 		?>
+		</td>
 			</tr>
 			<tr>
 
@@ -50,7 +53,7 @@
 		</td>
 		<td>
 			<?php
-				echo "<td>".$data->type."</td>";
+				echo $data->type;
 			?>
 		</td>
 			</tr>
@@ -61,7 +64,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->box_price."</td>";
+			echo $data->box_price;
 			?>
 		</td>
 			</tr>
@@ -72,7 +75,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->location."</td>";
+			echo $data->location;
 			?>
 		</td>
 			</tr>
@@ -83,7 +86,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->ratio."</td>";
+			echo $data->ratio;
 			?>
 		</td>
 			</tr>
@@ -94,7 +97,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->payment_plan."</td>";
+			echo $data->payment_plan;
 			?>
 		</td>
 			</tr>
@@ -105,7 +108,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->agent_connection_count."</td>";
+			echo $data->agent_connection_count;
 			?>
 		</td>
 			</tr>
@@ -116,27 +119,27 @@
 		</th>
 		<td>
 		<?php
-			echo "<td>".$data->buyer_seller_connection_count."</td>";
+			echo $data->buyer_seller_connection_count;
 		?>
 		</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<input type="hidden" name='project_id' value='<?php echo $data->id ?>'>
 					<?php
-						$q = "select id from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."'";
-						$conn_result = mysql_query($q) or die(mysql_error());
-						// echo $conn_result;
-						if( mysql_num_rows($conn_result) > 0 ){
-							echo "<b>Connected</b>";
+						$listaSql = "select id from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."'";
+						$listaQuery 			=	$db->query($listaSql);
+                 		if( $db->numRows($listaQuery)> 0 ){
+							echo "<span class='label label-success'>Connected</span>";
 						}
 						else{
 
-							echo "<input type='submit' name='connect' value='connect'>";
+							echo "<input type='submit'  class='btn btn-info' name='connect' value='connect'>";
 						}
 
 					?>
 				</td>
+
 			</tr>
 		</table>
 		</form>

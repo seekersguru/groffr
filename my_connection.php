@@ -1,49 +1,50 @@
 <?php
-	include('connection.php');
+include('header.php');
 ?>
-<a href="add_project.php">Add Project</a>
-<a href="my_project.php">My Project</a>
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>My Connection</title>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
 
-<div class="content">
-	<h1>
-		My projects
-	</h1>
+
+<br>
+
+<br>
+<br>
 
 <?php
-	$query = "Select * from connection where owner_id =".$_SESSION['user_id'];
+	$query = "Select * from connection where register_id =".$_SESSION['user_id'];
 	// echo $query."<br>";
-	$result = mysql_query($query) or die(mysql_error() );
+	$listabQuery 			=	$db->query($query);
+
 	// exit;
 	// header('Location:myaccount.php');
-	while($data = mysql_fetch_object($result)){
-		?>
-		<table style='text-align:left;border:1px solid #000;margin-bottom:20px'>
+   while($datatb = $db->fetchNextObject($listabQuery)){
+      $queryi = "Select * from ".PROJECTS_TBL." where id =".$datatb->projects_id;
+      $listabQueryi 			=	$db->query($queryi);
+
+	
+   while($data = $db->fetchNextObject($listabQueryi)){
+   		?>
+		<table class= "table table-bordered table-hover">
 			<tr>
 
 		<td>
-			Project Summary
+			Project Summary connect Request
 		</td>
+		<td>
 		<?php
-			echo "<td>".$data->summary."</td>"
+			echo $data->summary;
 		?>
+	</td>
 			</tr>
 			<tr>
 
 		<td>
 			Details
 		</td>
+		<td>
 		<?php
-			echo "<td>".$data->details."</td>";
+			echo $data->details;
 		?>
-			</tr>
+			
+			</td></tr>
 			<tr>
 
 		<td>
@@ -51,7 +52,7 @@
 		</td>
 		<td>
 			<?php
-				echo "<td>".$data->type."</td>";
+				echo $data->type;
 			?>
 		</td>
 			</tr>
@@ -62,7 +63,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->box_price."</td>";
+			echo $data->box_price;
 			?>
 		</td>
 			</tr>
@@ -73,7 +74,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->location."</td>";
+			echo $data->location;
 			?>
 		</td>
 			</tr>
@@ -84,7 +85,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->ratio."</td>";
+			echo $data->ratio;
 			?>
 		</td>
 			</tr>
@@ -95,7 +96,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->payment_plan."</td>";
+			echo $data->payment_plan;
 			?>
 		</td>
 			</tr>
@@ -106,7 +107,7 @@
 		</td>
 		<td>
 			<?php
-			echo "<td>".$data->agent_connection_count."</td>";
+			echo $data->agent_connection_count;
 			?>
 		</td>
 			</tr>
@@ -117,13 +118,14 @@
 		</th>
 		<td>
 		<?php
-			echo "<td>".$data->buyer_seller_connection_count."</td>";
+			echo $data->buyer_seller_connection_count;
 		?>
 		</td>
 		</tr>
 		</table>
 		<?php
 	}
+}
 ?>
 </div>
 </body>
