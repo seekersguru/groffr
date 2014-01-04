@@ -1,7 +1,7 @@
 <?php
 	ob_start();
 	@session_start();
-		 error_reporting(0);
+	error_reporting(0);
 /************************************** IP Addres For local demo and live Define Here *************************************/
 $Company_Email_ID =  "info@maddyzone.com";
 
@@ -46,10 +46,10 @@ $Company_Email_ID =  "info@maddyzone.com";
 			
 			
 		case "LIVE":
-			define("SERVER", "");
-			define("DBASE", "");
-			define("USER", "");
-			define("PASS", "");
+			define("SERVER", "groffrrn.db.11768404.hostedresource.com");
+			define("DBASE", "groffrrn");
+			define("USER", "groffrrn");
+			define("PASS", "RRRnishu@123");
 			define("WEBSITE_URL", "http://" . $_SERVER['HTTP_HOST'] . '/');
 			define("WEBSITE_AFFILIATE_URL", "http://" . $_SERVER['HTTP_HOST'] . '/');
 			define("WEBSITE_ROOT_URL", $_SERVER['DOCUMENT_ROOT'] . '/');

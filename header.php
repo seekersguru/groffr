@@ -1,9 +1,16 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'].'/Groffr/app_inc/main-config.php');
-if( !isset($_SESSION['fname'] )){
-	header("location:login.php");
+include('app_inc/main-config.php');
+
+if( !isset($_SESSION['user_id'] )){
+	
+  header("location:login.php");
 }
-echo 'Welcome ' .$_SESSION['fname'] ." " .$_SESSION['lname'] ."<br>";
+
+if( !isset($_GET['type'] )){
+  
+$_SESSION['type']=$_GET['type'];
+}
+
 if( isset($_POST['connect'] )){
 	$project_id= mysql_real_escape_string( $_POST['project_id'] );
 	$query = "insert into connection(`id`,`projects_id`,`register_id`) values(null,'".$project_id."',
@@ -78,3 +85,5 @@ if( isset($_POST['connect'] )){
   	  </div>
   	</div>
     <!-- Fixed navbar -->
+    <br>
+    <br>
