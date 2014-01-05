@@ -20,9 +20,19 @@ if( isset($_POST['connect'] )){
 		".$_SESSION['user_id'].",'".$_POST['help_message']."','".$_POST['link_page']."','".$_POST['attachment']."','".$_POST['connet_as']."')";
 	// echo $query."<br>";
 	$mysql = mysql_query($query) or die(mysql_error() );
-	// exit;
-	// header('Location:myaccount.php');
-	echo "<div class='info'>Projected added to your connection</div>";
+
+    $From="info@Groffr.com";
+    $subject = "Your request to connect as ". $_POST['connet_as'] ." pendng";
+    $headers = "From: ".$From." \r\nReply-To: ".$From;
+    $message = "This email was sent in response to show your interest on project .\r\n";
+    $message .= "If this was not you, then please report this to Groffr at the email address shown below.\r\n\r\n";
+    $message .= "Otherwise,  please enter the address you see below into your web browser.\r\n\r\n";
+    $message .= 'http://groffe.com/project.php?project='.$_POST['project_id'];
+    $message .= "\rto see status\r\n\r\n";
+    $message .= "Best regards,\r\n\r\nThe Groffr team\n";
+    $message .= "$From";
+     mail($_SESSION['email'], $subject, $message, $headers);
+  echo "<div class='info'>Projected added to your connection</div>";
 }
 ?>
 
@@ -47,6 +57,15 @@ if( isset($_POST['connect'] )){
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <style>
+    .hide_temp{
+      display: none;
+    }
+
+    </style>
+  
+
   </head>
 
   <body>

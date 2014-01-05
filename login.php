@@ -85,6 +85,8 @@ function oauth_session_exists() {
         $_SESSION['fname'] = $user_data->firstname;
         $_SESSION['lname'] = $user_data->lastname;
         $_SESSION['user_id'] = $user_data->userid;
+        $_SESSION['email'] = $user_data->email;
+        
         header('location:selecttype.php');
       }
       else{

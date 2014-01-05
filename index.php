@@ -44,6 +44,12 @@ include("app_inc/main-config.php");
    .childlist a,.childlist table a{
    	color: black;
    }
+   .childlist a{
+   	line-height: 33px;
+   }
+   .childlist table tr td{
+   	 padding: 0px !important;
+   }
 .pull-left {
   float: left !important;
 }
@@ -224,13 +230,13 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 <a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
-<h2>
-<a href="add_project.php">This Could be You !<br> <br>
-	 What do you wish for? <br><br>
+<h4>
+<a href="add_project.php">This Could be You !<br>
+	 What do you wish for?<br> 
 	 Enter now<br>
 
 </a>
-	<h2>
+	<h4>
 
 </div>
 
@@ -373,13 +379,13 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 <a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
-<h2>
-<a href="add_project.php">This Could be You !<br> <br>
-	 What do you wish for? <br><br>
+<h4>
+<a href="add_project.php">This Could be You !<br>
+	 What do you wish for?<br> 
 	 Enter now<br>
 
 </a>
-	<h2>
+	<h4>
 
 </div>
 
@@ -523,13 +529,13 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 <a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
-<h2>
-<a href="add_project.php">This Could be You !<br> <br>
-	 What do you wish for? <br><br>
+<h4>
+<a href="add_project.php">This Could be You !<br>
+	 What do you wish for?<br> 
 	 Enter now<br>
 
 </a>
-	<h2>
+	<h4>
 
 </div>
 

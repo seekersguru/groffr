@@ -211,20 +211,20 @@ while($data	=	$db->fetchNextObject($listSql))
  </div>
 
 
-		<div class="form-group">
-         <label for="help_message">How can you help?</label>
-         <textarea  name='help_message' class="form-control"> </textarea>
+		<div class="form-group hide_temp">
+         <label for="help_message" >How can you help?</label>
+         <textarea  name='help_message' class="form-control" required > </textarea>
        </div>
 
-<div class="form-group">
+ <div class="form-group hide_temp">
          <label for="link_page">Add Link to a particular page </label>
          <textarea  name='link_page' class="form-control"> </textarea>
        </div>
 
-<div class="form-group">
+<div class="form-group hide_temp">
          <label for="attachment">Upload Files</label>
          <textarea  name='attachment' class="form-control"> </textarea>
-       </div>
+ </div>
 
 							<input type='submit'  class='btn btn-info' name='connect' value='connect'>
 
@@ -246,5 +246,14 @@ while($data	=	$db->fetchNextObject($listSql))
 ?>
 
 </div>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+$("input[type=radio]").change(function(){
+$(".hide_temp").show();
+});
+	
+});
+
+</script>
 </body>
 </html>
