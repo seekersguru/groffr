@@ -16,7 +16,6 @@ if(isset($_GET['code'])) {
     '&client_secret=' .  $secret_key .
     '&code=' . urlencode($code)));
   $fb_json = json_decode( sc_curl_get_contents("https://graph.facebook.com/me?access_token=" . $access_token) );
-  //print_r($fb_json);
     $sc_provider_identity = $fb_json->id;
     $sc_email = $fb_json->email;
     $sc_first_name = $fb_json->first_name;
@@ -30,12 +29,12 @@ if(isset($_GET['code'])) {
 
     $_SESSION['fname'] =$sc_first_name;
     $_SESSION['lname']= $sc_last_name;
-    $_SESSION['email'] = $sc_email;
+     $_SESSION['email'] = $sc_email;
     $_SESSION['passcode']= "xcxcx465461365";
     $social = 1;
     $loginwith = 'Facebook';
-
-    $login_result = mysql_query("select userid,firstname,lastname from register where email ='". $_SESSION['email']."'");
+    $newQuery="select userid,firstname,lastname from register where email ='". $_SESSION['email']."'";
+    $login_result = mysql_query($newQuery);
       if( mysql_num_rows($login_result) > 0 ){
        $user_data = mysql_fetch_object( $login_result )  ;
        $_SESSION['userid'] = $user_data->userid;
@@ -179,7 +178,7 @@ function oauth_session_exists() {
   	        <span class="icon-bar"></span>
   	        <span class="icon-bar"></span>
   	      </button>
-  	      <a class="navbar-brand" href="<?php echo WEBSITE_URL;?>">Groffr</a>
+  	      <a class="navbar-brand" href="http://groffr.in">Groffr</a>
   	    </div>
   	    <div class="navbar-collapse collapse">
   	      <ul class="nav navbar-nav">

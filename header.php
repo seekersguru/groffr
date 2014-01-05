@@ -6,15 +6,20 @@ if( !isset($_SESSION['user_id'] )){
   header("location:login.php");
 }
 
-if( !isset($_GET['type'] )){
+if( $_GET['type'] !== ""  ){
   
+if($_SESSION['type'] == "")
+{
 $_SESSION['type']=$_GET['type'];
 }
 
+}
+
+
 if( isset($_POST['connect'] )){
 	$project_id= mysql_real_escape_string( $_POST['project_id'] );
-	$query = "insert into connection(`id`,`projects_id`,`register_id`) values(null,'".$project_id."',
-		".$_SESSION['user_id'].")";
+	$query = "insert into connection(`id`,`projects_id`,`register_id`,`help_message`,`link_page`,`attachment`) values(null,'".$project_id."',
+		".$_SESSION['user_id'].",'".$_POST['help_message']."','".$_POST['link_page']."','".$_POST['attachment']."')";
 	// echo $query."<br>";
 	$mysql = mysql_query($query) or die(mysql_error() );
 	// exit;

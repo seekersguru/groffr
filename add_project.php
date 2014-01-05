@@ -1,5 +1,6 @@
 <?php
  include_once('header.php'); 
+
 if( isset($_POST['add_project'] )){
 	$project_summary = mysql_real_escape_string( $_POST['project_summary'] );
 	$details= mysql_real_escape_string($_POST['details']);
@@ -10,7 +11,8 @@ if( isset($_POST['add_project'] )){
 	$payment_plan = mysql_real_escape_string($_POST['payment_plan']);
 	$agent_connection_count= mysql_real_escape_string($_POST['agent_connection_count']);
 	$buyer_seller_connection_count= mysql_real_escape_string($_POST['buyer_seller_connection_count']);
-	$query = "insert into projects(`id`,`summary`,`details`,`type`,`box_price`,`location`,`ratio`,`payment_plan`,`agent_connection_count`,`buyer_seller_connection_count`,`owner_id`) values(null,'".$project_summary."',
+	$postas=mysql_real_escape_string($_POST['post_as']);
+	$query = "insert into projects(`id`,`summary`,`details`,`type`,`box_price`,`location`,`ratio`,`payment_plan`,`agent_connection_count`,`buyer_seller_connection_count`,`owner_id`,`post_as`) values(null,'".$project_summary."',
 		'".$details."',
 		'".$type."',
 		'".$box_price."',
@@ -19,7 +21,7 @@ if( isset($_POST['add_project'] )){
 		'".$payment_plan."',
 		'".$agent_connection_count."',
 		'".$buyer_seller_connection_count."',
-		".$_SESSION['user_id'].")";
+		".$_SESSION['user_id'].",'".$postas."')";
 	// echo $query."<br>";
 	$mysql = mysql_query($query) or die(mysql_error() );
 	// exit;
@@ -45,6 +47,29 @@ if( isset($_POST['add_project'] )){
 		<div class="form-group">
          <label for="details">Details</label>
          <textarea  name='details' class="form-control"> </textarea>
+       </div>
+
+       <div class="form-group">
+         <label for="post_as">Who are you</label>
+
+         <div class="radio-inline">
+  <label>
+    <input type="radio" name="post_as" id="optionsRadios1" value="Buyer" <?php if($_SESSION['type']=="Buyer") { echo "checked";}?> >
+  Buyer
+  </label>
+</div>
+<div class="radio-inline">
+  <label>
+    <input type="radio" name="post_as" id="optionsRadios2" value="Agent" <?php if($_SESSION['type']=="Agent") { echo "checked";}?>>
+  Agent
+  </label>
+</div>
+<div class="radio-inline">
+  <label>
+    <input type="radio" name="post_as" id="optionsRadios3" value="Seller" <?php if($_SESSION['type']=="Seller") { echo "checked";}?>>
+ Seller
+  </label>
+</div>
        </div>
        
        <div class="form-group">

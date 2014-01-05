@@ -69,7 +69,8 @@ $Company_Email_ID =  "info@maddyzone.com";
 
 
 /************************************** All Global Constants will Define Here *************************************/
-
+    define('WEBSITE_ALL_PROJECT_URL',WEBSITE_URL."all_project.php");
+    define('WEBSITE_PROJECT_URL',WEBSITE_URL."project.php");
 	define("CLASS_FOLDER", "classes/");
 	define("FUNCTION_FOLDER", "function/");
 	define("WEBSITE_TITLE", "Groffr");
@@ -140,6 +141,7 @@ $Company_Email_ID =  "info@maddyzone.com";
 
 	include_once("db-tables.php");
 	include_once($site_path.CLASS_FOLDER . "db.class.php");
+	include_once($site_path.CLASS_FOLDER . "class.paging.php");
 	include_once($site_path.CLASS_FOLDER . "session_class.php");
 	include_once($site_path.CLASS_FOLDER . "login_class.php");
 	include_once($site_path.CLASS_FOLDER . "class.phpmailer.php");
@@ -153,6 +155,7 @@ $Company_Email_ID =  "info@maddyzone.com";
 	$mySession		=	new Session();
 	$db				=	new DB(DBASE, SERVER, USER, PASS);
 	$objLogin		=	new Login();
+	$page1= new Page();
 
 /**************************************End object creation will palce here ********************************************/
 
