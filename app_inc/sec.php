@@ -57,13 +57,13 @@ function SEC_EncryptStringArray($stringArray, $key = 'fJ8$snO67Gl5GT') {
 	
 	function SEC_AccountConfirmEmail($Email, $uuid, $From, $AccountConfURL) {
 		//var_dump($Email.",". $uuid.",".$From.",".$AccountConfURL);
-		$subject = "Confirm your new 321Fame account registration.";
+		$subject = "Confirm your new Groffr account registration.";
 		$headers = "From: ".$From." \r\nReply-To: ".$From;
 		$message = "This email was sent in response to a new account registration using your email address.\r\n";
-		$message .= "If this was not you, then please report this to 321 Fame at the email address shown below.\r\n\r\n";
+		$message .= "If this was not you, then please report this to Groffr at the email address shown below.\r\n\r\n";
 		$message .= "Otherwise, to activate your new account, please enter the address you see below into your web browser.\r\n\r\n";
 		$message .= $AccountConfURL."?cnf=".$uuid."\r\n\r\n";
-		$message .= "Best regards,\r\n\r\nThe 321 Fame team\n";
+		$message .= "Best regards,\r\n\r\nThe Groffr team\n";
 		$message .= "$From";
 		return mail($Email, $subject, $message, $headers);
 	}
@@ -72,15 +72,15 @@ function SEC_EncryptStringArray($stringArray, $key = 'fJ8$snO67Gl5GT') {
 function SEC_AccountConfirmEmailFB($Email, $uuid, $From, $AccountConfURL) {
 //var_dump($Email.",". $uuid.",".$From.",". $AccountConfURL.",".$_SESSION['fb']['password']);
 		//var_dump($Email.",". $uuid.",".$From.",".$AccountConfURL);
-		$subject = "Confirm your new 321Fame account registration.";
+		$subject = "Confirm your new Groffr account registration.";
 		$headers = "From: ".$From." \r\nReply-To: ".$From;
 		$message = "This email was sent in response to a new account registration using your email address.\r\n";
-		$message .= "If this was not you, then please report this to 321 Fame at the email address shown below.\r\n\r\n";
+		$message .= "If this was not you, then please report this to Groffr at the email address shown below.\r\n\r\n";
 		$message .= "Otherwise, to activate your new account, please enter the address you see below into your web browser.\r\n\r\n";
 		$message .= "Your Email:".$Email.".\r\n";
 		$message .= "Your Password:".$_SESSION['fb']['password'].".\r\n" ;
 		$message .= $AccountConfURL."?cnf=".$uuid."\r\n\r\n";
-		$message .= "Best regards,\r\n\r\nThe 321 Fame team\n";
+		$message .= "Best regards,\r\n\r\nThe Groffr team\n";
 		$message .= "$From";
 		return  mail($Email, $subject, $message, $headers);
 	}
@@ -89,15 +89,15 @@ function SEC_AccountConfirmEmailFB($Email, $uuid, $From, $AccountConfURL) {
 function SEC_SendPassword($Email,$From,$password,$AccountConfURL) {
 //var_dump($Email.",". $uuid.",".$From.",". $AccountConfURL.",".$_SESSION['fb']['password']);
 		//var_dump($Email.",". $uuid.",".$From.",".$AccountConfURL);
-		$subject = "Password Changed 321Fame.";
+		$subject = "Password Changed Groffr.";
 		$headers = "From: ".$From." \r\nReply-To: ".$From;
 		$message = "This email was sent in response to change password using your email address.\r\n";
-		$message .= "If this was not you, then please report this to 321 Fame at the email address shown below.\r\n\r\n";
+		$message .= "If this was not you, then please report this to Groffr at the email address shown below.\r\n\r\n";
 		$message .= "Otherwise,  please enter the address you see below into your web browser.\r\n\r\n";
 		$message .= "Your Email:".$Email.".\r\n";
 		$message .= "Your Password:".$password.".\r\n" ;
 		$message .= $AccountConfURL."\r\n\r\n";
-		$message .= "Best regards,\r\n\r\nThe 321 Fame team\n";
+		$message .= "Best regards,\r\n\r\nThe Groffr team\n";
 		$message .= "$From";
 		return  mail($Email, $subject, $message, $headers);
 	}

@@ -53,7 +53,8 @@ if(isset($_GET['code'])) {
          $_SESSION['userid'] = mysql_insert_id();
            $_SESSION['user_id'] =$_SESSION['userid'];
        }
-      header("Location: selecttype.php");
+    
+    header("Location: selecttype.php");
 
 }
 function sc_curl_get_contents( $url ) {
@@ -106,7 +107,9 @@ function oauth_session_exists() {
 
           $response         = $OBJ_linkedin->profile('~:(id,first-name,last-name,picture-url,email-address)');
           $result             = new SimpleXMLElement($response['linkedin']);
-                $_SESSION['passcode']   = $result->id;
+                $_SESSION = array();
+              //  $_SESSION['passcode']   = $result->id;
+                $_SESSION['passcode'] ="linkedian@1234";
                 $_SESSION['fname']    = $result->{'first-name'};
                 $_SESSION['lname']    = $result->{'last-name'};
                 $_SESSION['email'] =    $result->{'email-address'};
@@ -117,8 +120,8 @@ function oauth_session_exists() {
       $login_result = mysql_query("select * from register where email ='". $_SESSION['email']."'");
       if( mysql_num_rows($login_result) > 0 ){
          $user_data = mysql_fetch_object( $login_result )  ;
-           $_SESSION['userid'] = $user_data->userid;
-           $_SESSION['user_id']= $user_data->userid;
+          $_SESSION['userid'] = $user_data->userid;
+          $_SESSION['user_id']= $user_data->userid;
            $_SESSION['fname']  =$user_data->firstname;
            $_SESSION['lname']  =$user_data->lastname;
            $_SESSION['email']  =$user_data->email;
@@ -139,7 +142,8 @@ function oauth_session_exists() {
          $_SESSION['user_id'] =$_SESSION['userid'];
        }
     
-    header("location:selecttype.php");
+
+   @header("location:selecttype.php");
  
    }
 ?>
@@ -165,6 +169,17 @@ function oauth_session_exists() {
       <script src="assets/js/html5shiv.js"></script>
       <script src="assets/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+    #linkedin_connect_form #linksubmit {
+  background: url("/assets/images/ln_connect.jpg") no-repeat scroll 0 0 transparent;
+ color: #000000;
+ cursor: pointer;
+font-weight: bold;
+height: 23px;
+padding-bottom: 12px;
+width: 155px;
+}
+    </style>
   </head>
 
   <body>
@@ -200,7 +215,7 @@ function oauth_session_exists() {
       </span>
       <form id="linkedin_connect_form" action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
         <input type="hidden" name="<?php echo LINKEDIN::_GET_TYPE;?>" id="<?php echo LINKEDIN::_GET_TYPE;?>" value="initiate" />
-        <input type="submit" value="Connect to LinkedIn" name="linkedin" />
+        <input type="submit"  id="linksubmit" value="" name="linkedin" />
         </form> 
       </div>
       <div class=''>
@@ -215,8 +230,9 @@ function oauth_session_exists() {
         </label> -->
         <input type="hidden" value="signin" name="signin" /> 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+       <br>
        
-       <a href="register.php" class="btn btn-link">Register</a>
+       <a href="register.php" type="button" class="btn btn-success">Register</a>
       </form>
 
       </div>

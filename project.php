@@ -53,10 +53,18 @@ while($data	=	$db->fetchNextObject($listSql))
 		<form method='post'>
 
 		<table class= "table table-bordered table-hover"  >
+			<thead>
+				<tr class="success">
+					<th colspan="2">
+						Post As <?php  echo $data->post_as;?>
+					</th>
+				</tr>
+			</thead>
+<tbody>
 			<tr>
 
 		<td>
-			Project Summary
+			Project Summary 
 		</td>
 		<?php
 			echo "<td>".$data->summary."</td>"
@@ -154,6 +162,11 @@ while($data	=	$db->fetchNextObject($listSql))
 				<td colspan="2">
 					<input type="hidden" name='project_id' value='<?php echo $data->id ?>'>
 					<?php
+						
+                
+
+ 
+
 						if($_SESSION['user_id'] == $data->owner_id)
 						{
                            echo "<span class='label label-warning'>You are the Creator of this Project So no need to connect !!! </span>";
@@ -172,9 +185,33 @@ while($data	=	$db->fetchNextObject($listSql))
 						}
 						}
 						else{
-?>
 
-							<div class="form-group">
+                      $typearr=array('Buyer','Agent','Seller');
+
+				   	 if(($key = array_search($data->post_as, $typearr)) !== false) {
+					     unset($typearr[$key]);
+					 }
+
+					 ?>
+					 <div class="form-group">
+         <label for="connet_as">Connect as</label>
+         <?php
+					 foreach ($typearr as $key => $value) {
+   echo '<div class="radio-inline">
+  <label>
+    <input type="radio" name="connet_as"  value="'.$value.'" >
+  '.$value.'
+  </label>
+</div>';					 	
+ 
+}
+
+?>
+       
+ </div>
+
+
+		<div class="form-group">
          <label for="help_message">How can you help?</label>
          <textarea  name='help_message' class="form-control"> </textarea>
        </div>
@@ -199,6 +236,7 @@ while($data	=	$db->fetchNextObject($listSql))
 				</td>
 
 			</tr>
+		</tbody>
 		</table>
 		</form>
 		<?php

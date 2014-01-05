@@ -122,6 +122,31 @@ include('header.php');
 		?>
 		</td>
 		</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" name='project_id' value='<?php echo $data->id ?>'>
+					<?php
+						$listaSql = "select id from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."' ";
+						$listaQuery 			=	$db->query($listaSql);
+                 		if( $db->numRows($listaQuery)> 0 ){
+                            $projectdata=$db->fetchNextObject($listaQuery );
+                 			if($projectdata->status==1)
+                 			{
+							echo "<span class='label label-success'>Connected</span>";
+						}
+						else{
+						echo "<span class='label label-danger'> request pending for approval !!!</span>";	
+						}
+						}
+						else{
+
+							echo "<a type='button' class='btn btn-lg btn-primary' href='".WEBSITE_PROJECT_URL.'?project='.$data->id."'>Connect</a>";
+						}
+
+					?>
+				</td>
+
+			</tr>
 		</table>
 		<?php
 	}

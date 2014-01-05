@@ -221,6 +221,7 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 		<?php
 	}
 ?>
+<a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
 <h2>
@@ -369,6 +370,7 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 		<?php
 	}
 ?>
+<a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
 <h2>
@@ -518,6 +520,7 @@ $queryuser = "Select * from register where userid = ".$data->owner_id;
 		<?php
 	}
 ?>
+<a type="button" class="btn btn-success" href="all_project.php" > More</a>
 <div class="childlist pull-left" style="width:22%">
 
 <h2>

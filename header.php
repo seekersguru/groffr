@@ -1,6 +1,4 @@
-<?php
-include('app_inc/main-config.php');
-
+<?php include('app_inc/main-config.php');
 if( !isset($_SESSION['user_id'] )){
 	
   header("location:login.php");
@@ -18,8 +16,8 @@ $_SESSION['type']=$_GET['type'];
 
 if( isset($_POST['connect'] )){
 	$project_id= mysql_real_escape_string( $_POST['project_id'] );
-	$query = "insert into connection(`id`,`projects_id`,`register_id`,`help_message`,`link_page`,`attachment`) values(null,'".$project_id."',
-		".$_SESSION['user_id'].",'".$_POST['help_message']."','".$_POST['link_page']."','".$_POST['attachment']."')";
+	$query = "insert into connection(`id`,`projects_id`,`register_id`,`help_message`,`link_page`,`attachment`,`connet_as`) values(null,'".$project_id."',
+		".$_SESSION['user_id'].",'".$_POST['help_message']."','".$_POST['link_page']."','".$_POST['attachment']."','".$_POST['connet_as']."')";
 	// echo $query."<br>";
 	$mysql = mysql_query($query) or die(mysql_error() );
 	// exit;
@@ -36,7 +34,7 @@ if( isset($_POST['connect'] )){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Add Project</title>
+    <title>Groffr</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -70,6 +68,7 @@ if( isset($_POST['connect'] )){
   	        <li><a href="add_project.php">Add Project</a></li>
   	        <li><a href="my_project.php">My Project</a></li>
             <li><a href="my_connection.php">My Connection</a></li>
+             <li><a href="my_notification.php">My Notification</a></li>
             
   	        <li><a href="#"> <?php echo 'Welcome ' .$_SESSION['fname'] ." " .$_SESSION['lname']; ?></a></li>
 

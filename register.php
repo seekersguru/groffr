@@ -1,5 +1,5 @@
 <?php
-include("connection.php");
+include('app_inc/main-config.php');
 $already =0;
 if( isset($_POST['register']) ){
 	
@@ -23,7 +23,10 @@ if( isset($_POST['register']) ){
      	$_SESSION['fname'] = $fname;
 	 	$_SESSION['lname'] = $lname;
 		$_SESSION['userid'] = mysql_insert_id();
-			header("location:myaccount.php");
+		$_SESSION['user_id'] =$_SESSION['userid'];
+
+   SEC_AccountConfirmEmail($email, $_SESSION['userid'], "info@groffr.com", "http://groffr.in");
+	header("location:myaccount.php");
 	}
 	else{
 		$already =1;
@@ -52,7 +55,7 @@ if( isset($_POST['register']) ){
   	        <span class="icon-bar"></span>
   	        <span class="icon-bar"></span>
   	      </button>
-  	      <a class="navbar-brand" href="<?php echo WEBSITE_URL;?>">Groffr</a>
+  	      <a class="navbar-brand" href="http://groffr.in">Groffr</a>
   	    </div>
   	    <div class="navbar-collapse collapse">
   	      <ul class="nav navbar-nav">
