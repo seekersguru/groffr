@@ -1,12 +1,27 @@
 <?php
 include('header.php');
+$msg="";
+if(isset($_GET['approve']) && is_numeric($_GET['approve']) )
+{
+
+
+			$sqlStatus = "UPDATE " .CONNECTION_TBL. " SET status = '1' WHERE id=".$_GET['approve'];
+    		$db->execute($sqlStatus);
+    		$msg = "Status successfully updated";
+
+}
 ?>
 
 <br>
 <br>
 <br>
 
+
 <?php
+if($msg)
+{
+	echo '<div class="alert alert-success">' .$msg. '</div>';
+}
 	 $query = "Select * from projects where owner_id = ".$_SESSION['user_id'];
 	$listabQuery 			=	$db->query($query);
     while($datatb = $db->fetchNextObject($listabQuery)){
@@ -129,24 +144,31 @@ Post As		</td>
        if( $db->numRows($listabQueryi) > 0)
        {
       while($data = $db->fetchNextObject($listabQueryi)){
+   
+                $queryu 		= "Select * from register where userid =".$data->register_id;
+      			$listabQueryu   = $db->query($queryu);
+      			$datau 		    = $db->fetchNextObject($listabQueryu);
 
    ?>
 		<tr>
+				<?php if($data->status == 0)
+             {
+      			
+             	?>
 				<td >
              <?php 
-     $queryu = "Select * from register where userid =".$data->register_id;
-      $listabQueryu 			=	$db->query($queryu);
-      $datau = $db->fetchNextObject($listabQueryu);      
-      echo  '<span class="label label-info">'.$datau->firstname.'</span> Want to connect with you' ;
+           echo  '<span class="label label-info">'.$datau->firstname.'</span> Want to connect with you' ;
 
              ?>			
+			</td>
+           <td>
+           <a href="my_notification.php?approve=<?php echo $data->id ?>"  type="button" class="btn btn-primary"> Approve</a>
+            </td>
+<?php }else {
 
-				</td>
+  echo  '<td colspan="2"><span class="label label-success">'.$datau->firstname.' </span> Already  Connected </td>' ;
 
-               <td>
-            
-   
-              </td>
+} ?>
 
 			</tr>
 	<?php }

@@ -34,6 +34,16 @@ if( isset($_POST['connect'] )){
      mail($_SESSION['email'], $subject, $message, $headers);
   echo "<div class='info'>Projected added to your connection</div>";
 }
+
+if (isset($_POST['connect']))
+{
+  $project_id= mysql_real_escape_string( $_POST['project_id'] );
+ echo $query = "insert into project_comment(`userid`,`project_id`,`comment`,`time`,`ip`)
+   values(".$_SESSION['user_id'].",'".$project_id."','".$_POST['comment']."','".time()."','".$_SERVER['REMOTE_ADDR']."')";
+  // echo $query."<br>";
+  $mysql = mysql_query($query) or die(mysql_error() );
+
+}
 ?>
 
 <!DOCTYPE html>

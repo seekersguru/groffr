@@ -127,11 +127,11 @@
 				<td colspan="2">
 					<input type="hidden" name='project_id' value='<?php echo $data->id ?>'>
 				<?php
-						$listaSql = "select id from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."' ";
+						$listaSql = "select * from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."' ";
 						$listaQuery 			=	$db->query($listaSql);
                  		if( $db->numRows($listaQuery)> 0 ){
-                            $projectdata=$db->fetchNextObject($listaQuery );
-                 			if($projectdata->status==1)
+                         $projectdata = $db->fetchNextObject($listaQuery );
+                 	    	if($projectdata->status==1)
                  			{
 							echo "<span class='label label-success'>Connected</span>";
 						}

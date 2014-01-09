@@ -163,22 +163,92 @@ while($data	=	$db->fetchNextObject($listSql))
 					<input type="hidden" name='project_id' value='<?php echo $data->id ?>'>
 					<?php
 						
-                
-
- 
-
-						if($_SESSION['user_id'] == $data->owner_id)
+                	if($_SESSION['user_id'] == $data->owner_id)
 						{
                            echo "<span class='label label-warning'>You are the Creator of this Project So no need to connect !!! </span>";
+						
+?>
+<br>
+			  		<br>
+
+			         <textarea  name='comment' class="form-control" required >  </textarea>
+			       	<input type='submit'  class='btn btn-info' name='connect' value='Submit'>
+
+			       	<?php 
+
+                       $listcSql = "select * from project_comment where `project_id` = '".$data->id."' ";
+						$listcQuery 			=	$db->query($listcSql);
+                 		if( $db->numRows($listcQuery)> 0 ){
+
+                        while($dbc	=	$db->fetchNextObject($listcQuery))
+                        { 
+                     
+                       
+                $queryu 		= "Select * from register where userid =".$dbc->userid;
+      			$listabQueryu   = $db->query($queryu);
+      			$datau 		    = $db->fetchNextObject($listabQueryu);
+
+                   $uname=$datau->firstname;
+                   if($_SESSION['user_id']==$datau->userid){
+
+                   	$uname="ME";
+                    }
+                    echo '<div class="alert">'. $dbc->comment .' by  <b>'. $uname.'</b> </div>';
+                    
+                       }
+
+                       }
+                       ?>
+
+ <?php
+
 						}else{
 
-						$listaSql = "select id from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."' ";
+						$listaSql = "select * from connection where `projects_id` = '".$data->id."' and register_id = '".$_SESSION['user_id']."' ";
 						$listaQuery 			=	$db->query($listaSql);
                  		if( $db->numRows($listaQuery)> 0 ){
                             $projectdata=$db->fetchNextObject($listaQuery );
                  			if($projectdata->status==1)
                  			{
-							echo "<span class='label label-success'>Connected</span>";
+							echo "<span class='label label-success'>you are Connected connected now give your comment</span>";
+						
+?>
+				 
+			  		<br>
+			  		<br>
+
+			         <textarea  name='comment' class="form-control" required >  </textarea>
+			       	<input type='submit'  class='btn btn-info' name='connect' value='Submit'>
+
+			       	<?php 
+
+                       $listcSql = "select * from project_comment where `project_id` = '".$data->id."' ";
+						$listcQuery 			=	$db->query($listcSql);
+                 		if( $db->numRows($listcQuery)> 0 ){
+
+                        while($dbc	=	$db->fetchNextObject($listcQuery))
+                        { 
+                     
+                       
+                $queryu 		= "Select * from register where userid =".$dbc->userid;
+      			$listabQueryu   = $db->query($queryu);
+      			$datau 		    = $db->fetchNextObject($listabQueryu);
+
+                   $uname=$datau->firstname;
+                   if($_SESSION['user_id']==$datau->userid){
+
+                   	$uname="ME";
+                    }
+                    echo '<div class="alert">'. $dbc->comment .' by  <b>'. $uname.'</b> </div>';
+                    
+                       }
+
+                       }
+
+
+			       	?>
+
+<?php
 						}
 						else{
 						echo "<span class='label label-danger'> request pending for approval !!!</span>";	
@@ -202,7 +272,8 @@ while($data	=	$db->fetchNextObject($listSql))
     <input type="radio" name="connet_as"  value="'.$value.'" >
   '.$value.'
   </label>
-</div>';					 	
+</div>';	
+
  
 }
 

@@ -71,7 +71,10 @@ $Company_Email_ID =  "info@maddyzone.com";
 /************************************** All Global Constants will Define Here *************************************/
     define('WEBSITE_ALL_PROJECT_URL',WEBSITE_URL."all_project.php");
     define('WEBSITE_PROJECT_URL',WEBSITE_URL."project.php");
-	define("CLASS_FOLDER", "classes/");
+    define('WEBSITE_MYACCOUNT_URL',WEBSITE_URL."myaccount.php");
+    define('WEBSITE_REGISTER_URL',WEBSITE_URL."register.php");
+    
+    define("CLASS_FOLDER", "classes/");
 	define("FUNCTION_FOLDER", "function/");
 	define("WEBSITE_TITLE", "Groffr");
 	define('DIRSEP', DIRECTORY_SEPARATOR);
@@ -122,6 +125,7 @@ $Company_Email_ID =  "info@maddyzone.com";
 	$AccountError =  "There is some problem in account creation. Please after some time...!!!";
 	$AccountSuccess =  "Your Account is made Successfully. Please Check your mail ...!!!";
 	$Email_Account_Exist = "By This email account already exist..!!!"; 
+	$Fill_Valid_Feild =  "Please fill valid value in input feilds!!!";
 	
 	$EmptyOldPassword = "please write old password..!!!<br>"; 
 	$ErrorOldPassword ="Old password is not correct..!!!<br>";

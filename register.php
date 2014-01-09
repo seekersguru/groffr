@@ -1,38 +1,41 @@
 <?php
 include('app_inc/main-config.php');
-$already =0;
-if( isset($_POST['register']) ){
+
+if($mySession->getSession('msg'))
+{
+	$msg			= 	$mySession->getSession('msg');
+	$fname			=	$mySession->getSession('fname');
+	$lname	    	=   $mySession->getSession('lname');
+	$email			=   $mySession->getSession('email');
+	$passcode		= 	$mySession->getSession('passscode');
+	$fnameErr		=	$mySession->getSession('fname err');
+	$lnameErr		=	$mySession->getSession('lname err');
+	$emailErr		=	$mySession->getSession('email err');
+	$passcodeErr	=	$mySession->getSession('passcode err');
 	
-	$fname 	= mysql_real_escape_string($_POST['fname']);
-	$lname 	= mysql_real_escape_string($_POST['lname']);
-	$email 		= mysql_real_escape_string($_POST['email']);
-	$passcode	= mysql_real_escape_string($_POST['passcode']);
-	$status 	= 'active';
-	$loginwith = mysql_real_escape_string($_POST['loginwith']);
-
-	$check_result = mysql_query("select userid from register where email = '".$email ."'") or die(mysql_error());
-	if( mysql_num_rows($check_result) == 0 ){
-	 $query = "insert into register(`firstname`,`lastname`,`email`,`password`,`status`,`loginwith`)
-           values('".$fname."',
-		'".$lname."',
-		'".$email."',
-		'".$passcode."',
-		'".$status."',
-		'Main' )";
-	$mysql = mysql_query($query) or die(mysql_error() );
-     	$_SESSION['fname'] = $fname;
-	 	$_SESSION['lname'] = $lname;
-		$_SESSION['userid'] = mysql_insert_id();
-		$_SESSION['user_id'] =$_SESSION['userid'];
-
-   SEC_AccountConfirmEmail($email, $_SESSION['userid'], "info@groffr.com", "http://groffr.in");
-	header("location:myaccount.php");
-	}
-	else{
-		$already =1;
-				
-	}
+	
+	$mySession->removeSession('fname');
+	$mySession->removeSession('lname');
+	$mySession->removeSession('email');
+	$mySession->removeSession('passcode');
+	$mySession->removeSession('msg');
+	
+	
+    $mySession->removeSession('fname err');
+	$mySession->removeSession('lname err');
+	$mySession->removeSession('email err');
+	$mySession->removeSession('passcode err');
+	
 }
+else
+{
+	$fname						=	'';
+	$lname						=	'';
+	$email					    =   '' ;
+	$passcode					=   '' ;
+	
+}	
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -42,7 +45,12 @@ if( isset($_POST['register']) ){
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/bootstrap.css">
 <link rel="stylesheet" href="assets/css/signin.css">
+<style>
+.error{
+color:"red";
 
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -71,28 +79,32 @@ if( isset($_POST['register']) ){
 
 
       <div style=' margin-top:120px' class='jumbotron'>
-	<form role="form" method="POST" action="?register=true">
-	<?php if($already){echo '<div class="alert alert-danger">A user with email address <b>'. $email .'</b> already registered please <a href="login.php">Login</a> </div>';}
+	<form role="form" method="POST" action="<?php echo WEBSITE_URL; ?>action.php">
+	<?php if($msg =="alreadyexist"){echo '<div class="alert alert-danger">A user with email address <b>'. $email .'</b> already registered please <a href="login.php">Login</a> </div>';}
  ?>
 		<div class="form-group">
 		<label>First Name</label> 
-		<input type="text" name="fname" class="form-control" placeholder="Enter First Name" autocomplete="off" required value=""> 
+		<input type="text" name="fname" class="form-control" placeholder="Enter First Name" autocomplete="off" required value="<?php echo $fname; ?>"> 
+	    <span class="error"><?php echo $fnameErr; ?></span>
 	   </div>
 	   <div class="form-group">
 		<label>Last Name</label>  
-		<input type="text" name="lname" class="form-control" placeholder="Enter Last Name" autocomplete="off" required value="">
+		<input type="text" name="lname" class="form-control" placeholder="Enter Last Name" autocomplete="off" required value="<?php echo $lname; ?>">
+		<span class="error"><?php echo $lnameErr; ?></span>
 		</div>
 	   <div class="form-group">
-		<label>Email</label>     <input type="email" name="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" required value="">
+		<label>Email</label>     <input type="email" name="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" required value="<?php echo $email; ?>">
+		<span class="alert error"><?php echo $emailErr; ?></span>
 		</div>
 	 
 		<div class="form-group">
-		<label>Password</label>     <input type="password" name="passcode" class="form-control" placeholder="Password" autocomplete="off" required value="">
+		<label>Password</label>     <input type="password" name="passcode" class="form-control" placeholder="Password" autocomplete="off" required value="<?php echo $passcode; ?>">
+		<span class="error"><?php echo $passcodeErr; ?></span>
 		</div>
-			<input type="hidden" name="loginwith" value="Main"></span>
-		
-		
-		<button type="submit" name="register" class="btn btn-default">Register</button>
+			<input type="hidden" name="loginwith" value="Main" />
+			<input type="hidden" name="action" value="register" /> 
+
+		  <button type="submit" name="register" class="btn btn-default">Register</button>
 	
 	</form>
   </div>
